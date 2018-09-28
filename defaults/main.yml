@@ -1,0 +1,10 @@
+---
+ci_registry_scheme: http
+ci_registry_url: localhost
+ci_registry_container: ""
+ci_registry_tag: ""
+ci_registry_username: ""
+ci_registry_password: ""
+
+# Don't change
+ci_registry_auth: no

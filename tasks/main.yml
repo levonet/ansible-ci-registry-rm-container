@@ -1,0 +1,26 @@
+---
+- set_fact:
+    ci_registry_auth: yes
+  when: ci_registry_username != "" and ci_registry_password != ""
+
+- name: Get registry Docker-Content-Digest
+  uri:
+    url: "{{ ci_registry_scheme }}://{{ ci_registry_url }}/v2/{{ ci_registry_container }}/manifests/{{ ci_registry_tag }}"
+    method: HEAD
+    user: "{{ ci_registry_username }}"
+    password: "{{ ci_registry_password }}"
+    force_basic_auth: "{{ ci_registry_auth }}"
+    headers:
+      Accept: application/vnd.docker.distribution.manifest.v2+json
+  register: ci_registry_digest
+
+- name: Remove tag {{ ci_registry_tag }} from registry
+  uri:
+    url: "{{ ci_registry_scheme }}://{{ ci_registry_url }}/v2/{{ ci_registry_container }}/manifests/{{ ci_registry_digest.docker_content_digest }}"
+    method: DELETE
+    user: "{{ ci_registry_username }}"
+    password: "{{ ci_registry_password }}"
+    force_basic_auth: "{{ ci_registry_auth }}"
+    headers:
+      Accept: application/vnd.docker.distribution.manifest.v2+json
+    status_code: 202
