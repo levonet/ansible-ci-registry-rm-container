@@ -20,7 +20,7 @@ This role is useful in CI pipeline after closing Pull Request and removing infra
   vars:
     ci_registry_url: registry.myorg.com
     ci_registry_container: myorg/myapp
-    ci_registry_tag: "PR-{{ github_pr_number }}"
+    ci_registry_tag: "{{ myapp_tag }}"
   roles:
   - role: levonet.registry-rm-container
 ```
@@ -28,7 +28,7 @@ This role is useful in CI pipeline after closing Pull Request and removing infra
 And run in Jenkins:
 
 ```bash
-ansible-playbook myplaybook.yml -e github_pr_number="${CHANGE_ID}"
+ansible-playbook myplaybook.yml -e myapp_tag="${GIT_BRANCH}"
 ```
 
 ## License
