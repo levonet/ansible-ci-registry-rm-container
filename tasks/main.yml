@@ -1,7 +1,7 @@
 ---
 - set_fact:
     ci_registry_auth: yes
-  when: ci_registry_username != "" and ci_registry_password != ""
+  when: ci_registry_username | length > 0 and ci_registry_password | length > 0
 
 - name: Get registry Docker-Content-Digest
   uri:
@@ -13,6 +13,7 @@
     headers:
       Accept: application/vnd.docker.distribution.manifest.v2+json
   register: ci_registry_digest
+  ignore_errors: yes
 
 - name: Remove tag {{ ci_registry_tag }} from registry
   uri:
@@ -24,3 +25,4 @@
     headers:
       Accept: application/vnd.docker.distribution.manifest.v2+json
     status_code: 202
+  when: ci_registry_digest.status == 200
