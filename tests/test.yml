@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  connection: local
+  roles:
+  - role: ../..
+    ci_registry_url: localhost
+    ci_registry_container: test/container
+    ci_registry_tag: PR-36
+    ci_registry_username: test
+    ci_registry_password: secret
